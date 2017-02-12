@@ -14,10 +14,16 @@ Install_PureFTPd() {
   id -u ${run_user} >/dev/null 2>&1
   [ $? -ne 0 ] && useradd -M -s /sbin/nologin ${run_user}
 
+ if [ -e "${alisql_install_dir}/bin/mysql" ]; then
+ 	withmysql="--with-mysql=${alisql_install_dir}"
+ 	else
+ 		withmysql="--with-mysql "
+ fi
+
   tar xzf pure-ftpd-${pureftpd_version}.tar.gz
   pushd pure-ftpd-${pureftpd_version}
   [ ! -d "${pureftpd_install_dir}" ] && mkdir -p ${pureftpd_install_dir}
-  ./configure --prefix=${pureftpd_install_dir} CFLAGS=-O2 --with-mysql --with-puredb  --with-quotas --with-cookie --with-virtualhosts --with-virtualchroot --with-diraliases --with-sysquotas --with-ratios --with-altlog --with-paranoidmsg --with-shadow --with-welcomemsg  --with-throttling --with-uploadscript --with-language=english --with-rfc2640 --with-peruserlimits --with-everything
+  ./configure --prefix=${pureftpd_install_dir} CFLAGS=-O2 ${withmysql} --with-puredb  --with-quotas --with-cookie --with-virtualhosts --with-virtualchroot --with-diraliases --with-sysquotas --with-ratios --with-altlog --with-paranoidmsg --with-shadow --with-welcomemsg  --with-throttling --with-uploadscript --with-language=english --with-rfc2640 --with-peruserlimits --with-everything
   make -j ${THREAD} && make install
   if [ -e "${pureftpd_install_dir}/sbin/pure-ftpwho" ]; then
     [ ! -e "${pureftpd_install_dir}/etc" ] && mkdir ${pureftpd_install_dir}/etc

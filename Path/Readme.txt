@@ -1,0 +1,1 @@
+如果出现安装后 pureftpd无法启动的情况， /usr/local/pureftpd/sbin/pure-config.pl: No such file or directory 则将本目录中的pure-config.pl文件上传到/usr/local/pureftpd/sbin/目录即可解决
